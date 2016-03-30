@@ -34,7 +34,7 @@ print x_train.shape, y_train.shape
 #For each feature, calculate the average, subtract the mean value from feature_value,
 #and divide the result by their Standard deviation. After Scaling, each feature
 #will have a Zero Average, with Standard Deviation of 1
-scalar = preprocessing.data.StandardScalar().fit(x_train)
+scalar = preprocessing.StandardScaler().fit(x_train)
 x_train = scalar.transform(x_train)
 x_test = scalar.transform(x_test)
 
