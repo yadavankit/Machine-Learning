@@ -35,14 +35,14 @@ print x_train.shape, y_train.shape
 # For each feature, calculate the average, subtract the mean value from feature_value,
 # and divide the result by their Standard deviation. After Scaling, each feature
 # will have a Zero Average, with Standard Deviation of 1
-scalar = preprocessing.StandardScaler().fit(x_train)
-x_train = scalar.transform(x_train)
-x_test = scalar.transform(x_test)
+scaler = preprocessing.StandardScaler().fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
 
 # Print new x_train
 print x_train
 
-# Plot Graphs and Curves 
+# Plot Graphs and Curves
 import matplotlib.pyplot as plt
 from matplotlib import pylab
 
@@ -71,12 +71,16 @@ clf = SGDClassifier()
 # Fit function (receives the training data and training classes, and builds Classifier)
 clf.fit(x_train, y_train)
 
-
+# State Min and Max Values
 x_min, x_max = x_train[:, 0].min() - .5, x_train[:, 0].max() + .5
 y_min, y_max = x_train[:, 1].min() - .5, x_train[:, 1].max() + .5
+
 xs = np.arange(x_min, x_max, 0.5)
+# Three Subplots for 3 Species Classification
 fig, axes = plt.subplots(1,3)
-fig.set_size_inches(10,8)
+# Set Size (distance from Left and Bottom Border) of SubGraphs
+fig.set_size_inches(8,6)
+
 for i in [0,1,2]:
 	axes[i].set_aspect('equal')
 	axes[i].set_title('Class ' + str(i) + ' versus the rest')
@@ -88,26 +92,14 @@ for i in [0,1,2]:
 	plt.scatter(x_train[:, 0], x_train[:, 1], c=y_train, cmap= plt.cm.prism)
 	ys = (-clf.intercept_[i] - xs * clf.coef_[i,0])/ clf.coef_[i,1]
 	plt.plot(xs, ys, hold=True)
+
+# Show Triple Binary Classifier
 plt.show()
 
+# Predicts the Species of Flower with Sepal Width 4.7 and Sepal Length 3.1
+# Selects the Class in which it is more confident (Boundary line whose distance
+# to instance is longer)
+print clf.predict(scaler.transform([[4.7, 3.1]]))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Prints distance of all three boundary lines from the Point(4.7, 3.1)
+print clf.decision_function(scaler.transform([[4.7, 3.1]]))
