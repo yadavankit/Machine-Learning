@@ -14,7 +14,6 @@ print x_iris[0], y_iris[0]
 # Print all names of Species 0: Setosa, 1: Versicolor, 2: Virginica
 print iris.target_names
 
-
 # Try predicting species using just sepal length & sepal width
 
 # Building a Training Dataset
@@ -83,8 +82,11 @@ fig.set_size_inches(8,6)
 
 for i in [0,1,2]:
 	axes[i].set_aspect('equal')
+	# Set title of Sub Graph
 	axes[i].set_title('Class ' + str(i) + ' versus the rest')
+	# Set X Axis Label
 	axes[i].set_xlabel('Sepal Length')
+	# Set Y Axis Label
 	axes[i].set_ylabel('Sepal Width')
 	axes[i].set_xlim(x_min, x_max)
 	axes[i].set_ylim(y_min, y_max)
@@ -103,3 +105,18 @@ print clf.predict(scaler.transform([[4.7, 3.1]]))
 
 # Prints distance of all three boundary lines from the Point(4.7, 3.1)
 print clf.decision_function(scaler.transform([[4.7, 3.1]]))
+
+# Measure effeciveness of Results (82 % here in Train Dataset)
+from sklearn import metrics
+y_train_pred = clf.predict(x_train)
+print metrics.accuracy_score(y_train, y_train_pred)
+
+# (68 % Efficiency in Test Data)
+y_test_pred = clf.predict(x_test)
+print metrics.accuracy_score(y_test, y_test_pred)
+
+# Print Precision, F1-Score, Recall, Support
+print metrics.classification_report(y_test, y_test_pred, target_names= iris.target_names)
+
+# Print Confusion Matrix
+print metrics.confusion_matrix(y_test, y_test_pred)
